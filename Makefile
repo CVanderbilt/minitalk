@@ -14,9 +14,9 @@ LDLIBS=-lft
 
 BMP=srcs/bmp.c
 
-SSRC=server.c utils.c
+SSRC=server.c utils2.c utils2.c
 
-CSRC=client.c utils.c
+CSRC=client.c utils1.c utils2.c
 
 SOBJ=$(SSRC:.c=.o)
 
