@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <stdio.h>
 
 void	ft_send(int pid, int *p)
 {
@@ -15,7 +16,7 @@ void	ft_send(int pid, int *p)
 		else
 			if (kill(pid, SIGUSR1) < 0)
 				exit (1);
-		usleep(150);
+		usleep(60);
 	}
 }
 
