@@ -2,7 +2,7 @@
 
 void	ft_send(int pid, int *p)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < 7)
@@ -49,9 +49,9 @@ void	ft_send_word(int pid, const char *str)
 	ft_send_char(pid, 0);
 }
 
-int main(int argc, const char *argv[])
+int	main(int argc, const char *argv[])
 {
-	int pid;
+	int	pid;
 
 	if (argc != 3)
 		return (1);
@@ -61,5 +61,4 @@ int main(int argc, const char *argv[])
 	ft_putstr(argv[2]);
 	write(1, "\n", 1);
 	return (0);
-
 }

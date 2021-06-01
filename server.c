@@ -3,7 +3,7 @@
 
 void	ft_proces_word(void)
 {
-	char *aux;
+	char	*aux;
 
 	aux = add(g_data->word, g_data->value);
 	free (g_data->word);
@@ -38,7 +38,7 @@ void	sig_handler(int signum)
 
 void	ft_lock(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	act.sa_handler = sig_handler;
 	act.sa_flags = 0;
@@ -49,10 +49,10 @@ void	ft_lock(void)
 	sigaction(SIGUSR1, &act, NULL);
 }
 
-int main(void)
+int	main(void)
 {
-	t_data d;
-	char *p;
+	t_data	d;
+	char	*p;
 
 	ft_lock();
 	g_data = &d;
@@ -74,6 +74,6 @@ int main(void)
 	ft_putstr(p);
 	write(1, "\n", 1);
 	free(p);
-	while(1)
+	while (1)
 		sleep(1000);
 }

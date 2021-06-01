@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME=push_swap
+SERVER=server
 
-BNAME=checker
+CLIENT=client
 
 CC=gcc
 
@@ -26,41 +26,29 @@ LDLIBS=-lft
 
 BMP=srcs/bmp.c
 
-SRC=src/asort.c src/asort_aux1.c src/asort_aux2.c \
-	src/bsort.c src/checks.c src/evaluate.c src/orders.c \
-	src/sorter.c src/stack1.c src/stack2.c src/stack3.c \
-	src/utils1.c src/utils2.c src/utils3.c src/utils4.c src/utils5.c\
-	src/stack_sorter.c src/orders_aux.c src/argv_parser1.c src/argv_parser2.c
+SSRC=server.c utils.c
 
-SRCMAIN=$(SRC) src/main.c
+CSRC=client.c utils.c
 
-SRCBONUS=$(SRC) src/checker.c
+SOBJ=$(SSRC:.c=.o)
 
-OBJMAIN=$(SRCMAIN:.c=.o)
+COBJ=$(CSRC:.c=.o)
 
-OBJBONUS=$(SRCBONUS:.c=.o)
 
-$(NAME):
-	$(CC) $(CFLAGS) -c $(SRCMAIN)
-	mv *.o src/
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJMAIN)
+$(SERVER):
+	$(CC) $(CFLAGS) -c $(SSRC)
+	$(CC) $(CFLAGS) -c client.c
+	$(CC) $(CFLAGS) -o $(SERVER) $(SOBJ)
+	$(CC) $(CFLAGS) -o $(CLIENT) $(COBJ) 
 
-$(BNAME):
-	$(CC) $(CFLAGS) -c $(SRCBONUS)
-	mv *.o src/
-	$(CC) $(CFLAGS) -o $(BNAME) $(OBJBONUS) 
-
-all: $(NAME)
-
-bonus: $(BNAME)
+all: $(SERVER)
 
 clean:
-	$(RM) *.o
-	$(RM) $(OBJMAIN) $(OBJBONUS)
+	$(RM) $(COBJ) $(SOBJ)
 
 fclean: clean
-	$(RM) -rf $(NAME) $(NAME).dSYM
-	$(RM) -rf $(BNAME) $(BNAME).dSYM
+	$(RM) -rf $(SERVER) $(SERVER).dSYM
+	$(RM) -rf $(CLIENT) $(CLIENT).dSYM
 
 re: fclean all
 
