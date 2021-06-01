@@ -8,10 +8,14 @@ void	ft_send(int pid, int *p)
 	while (++i < 7)
 	{
 		if (p[i])
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) < 0)
+				exit (1);
+		}
 		else
-			kill(pid, SIGUSR1);
-		usleep(1);
+			if (kill(pid, SIGUSR1) < 0)
+				exit (1);
+		usleep(150);
 	}
 }
 
@@ -48,26 +52,14 @@ void	ft_send_word(int pid, const char *str)
 int main(int argc, const char *argv[])
 {
 	int pid;
-	int p[7];
 
-	pid = ft_atoi(argv[1]);
-	p[0] = 1;
-	p[1] = 1;
-	p[2] = 0;
-	p[3] = 1;
-	p[4] = 0;
-	p[5] = 0;
-	p[6] = 0;
-	ft_send(pid, p);
-	p[0] = 0;
-	p[1] = 0;
-	p[3] = 0;
-	ft_send(pid, p);
-/*
 	if (argc != 3)
-		return (0);
+		return (1);
 	pid = ft_atoi(argv[1]);
 	ft_send_word(pid, argv[2]);
+	ft_putstr("mensaje: ");
+	ft_putstr(argv[2]);
+	write(1, "\n", 1);
 	return (0);
-*/
+
 }

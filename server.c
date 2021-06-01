@@ -1,9 +1,28 @@
 #include "server.h"
 #include "utils.h"
 
+void	ft_proces_word(void)
+{
+	char *aux;
+
+	aux = add(g_data->word, g_data->value);
+	free (g_data->word);
+	if (!aux)
+		exit(1);
+	g_data->word = aux;
+	if (g_data->value == 0)
+	{
+		ft_putstr(g_data->word);
+		write(1, "\n", 1);
+		free(g_data->word);
+		g_data->word = ft_strdup("");
+	}
+	g_data->value = 0;
+	g_data->dgts_received = 0;
+}
+
 void	sig_handler(int signum)
 {
-	write(1, "sig catched\n", 12);
 	if (signum == SIGUSR1)
 		g_data->dgts_received++;
 	if (signum == SIGUSR2)
@@ -13,24 +32,7 @@ void	sig_handler(int signum)
 	}
 	if (g_data->dgts_received == 7)
 	{
-		ft_putstr("received ");
-		ft_putstr(ft_itoa(g_data->value));
-		write(1, "\n", 1);
-		add(g_data->word, g_data->value);
-		if (!g_data->word)
-			exit(1);
-		if (g_data->value == 0)
-		{
-			write(1, "a", 1);
-			ft_putstr(g_data->word);
-			write(1, "a\n", 2);
-			free(g_data->word);
-			g_data->word = ft_strdup("");
-		}
-		else
-			write(1, "kk\n", 3);
-		g_data->value = 0;
-		g_data->dgts_received = 0;
+		ft_proces_word();
 	}
 }
 
@@ -47,22 +49,22 @@ void	ft_lock(void)
 	sigaction(SIGUSR1, &act, NULL);
 }
 
-int main(int argc, const char *argv[])
+int main(void)
 {
 	t_data d;
 	char *p;
 
 	ft_lock();
 	g_data = &d;
-	d.arr[0] = 68;
+	d.arr[0] = 64;
 	d.arr[1] = 32;
 	d.arr[2] = 16;
 	d.arr[3] = 8;
 	d.arr[4] = 4;
 	d.arr[5] = 2;
 	d.arr[6] = 1;
-	signal(SIGUSR1,sig_handler);
-	signal(SIGUSR2,sig_handler);
+	d.value = 0;
+	d.dgts_received = 0;
 	p = ft_itoa(getpid());
 	if (!p)
 		return (1);
@@ -70,7 +72,8 @@ int main(int argc, const char *argv[])
 	if (!d.word)
 		return (1 + ft_free(p));
 	ft_putstr(p);
+	write(1, "\n", 1);
 	free(p);
 	while(1)
-		pause();
+		sleep(1000);
 }
