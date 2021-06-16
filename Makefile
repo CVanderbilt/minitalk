@@ -1,6 +1,12 @@
 SERVER=server
 
+BSERVER=server_bonus
+
 CLIENT=client
+
+BCLIENT=client_bonus
+
+UTILS=utils
 
 CC=gcc
 
@@ -14,29 +20,41 @@ LDLIBS=-lft
 
 BMP=srcs/bmp.c
 
-SSRC=server.c utils1.c utils2.c
+SSRC=utils1.c utils2.c send_msg.c
 
-CSRC=client.c utils1.c utils2.c
+OBJ=$(SSRC:.c=.o)
+ 
+all: $(SERVER) $(CLIENT)
 
-SOBJ=$(SSRC:.c=.o)
-
-COBJ=$(CSRC:.c=.o)
-
+bonus: $(BSERVER) $(BCLIENT)
 
 $(SERVER):
 	$(CC) $(CFLAGS) -c $(SSRC)
-	$(CC) $(CFLAGS) -c client.c
-	$(CC) $(CFLAGS) -o $(SERVER) $(SOBJ)
-	$(CC) $(CFLAGS) -o $(CLIENT) $(COBJ) 
+	$(CC) $(CFLAGS) -c server.c
+	$(CC) $(CFLAGS) -o $(SERVER) $(OBJ) server.o
 
-all: $(SERVER)
+$(CLIENT):
+	$(CC) $(CFLAGS) -c $(SSRC)
+	$(CC) $(CFLAGS) -c client.c
+	$(CC) $(CFLAGS) -o $(CLIENT) $(OBJ) client.o
+
+$(BSERVER):
+	$(CC) $(CFLAGS) -c $(SSRC)
+	$(CC) $(CFLAGS) -c server_bonus.c
+	$(CC) $(CFLAGS) -o $(SERVER)_bonus $(OBJ) server_bonus.o
+
+$(BCLIENT):
+	$(CC) $(CFLAGS) -c $(SSRC)
+	$(CC) $(CFLAGS) -c client_bonus.c
+	$(CC) $(CFLAGS) -o $(CLIENT)_bonus $(OBJ) client_bonus.o
 
 clean:
-	$(RM) $(COBJ) $(SOBJ)
+	$(RM) $(OBJ) server.o client.o
+	$(RM) server_bonus.o client_bonus.o
 
 fclean: clean
-	$(RM) -rf $(SERVER) $(SERVER).dSYM
-	$(RM) -rf $(CLIENT) $(CLIENT).dSYM
+	$(RM) -rf $(SERVER) $(SERVER).dSYM $(BSERVER) $(BSERVER).dSYM
+	$(RM) -rf $(CLIENT) $(CLIENT).dSYM $(BCLIENT) $(BCLIENT).dSYM
 
 re: fclean all
 
